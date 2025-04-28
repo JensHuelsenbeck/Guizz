@@ -12,6 +12,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,22 +33,24 @@ fun QuizScreen(
 
 ) {
 
-    val easyQuestion = viewModel.fetchQuestion()
+    val easyQuestion = viewModel.fetchQuestion().collectAsState()
     var clickedAnswer by remember { mutableStateOf(false) }
     var showPopUp by remember { mutableStateOf(false) }
 
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Spacer(Modifier.height(50.dp))
         Card {
-            Text(
-                text = "",
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(20.dp)
-                    .width(350.dp)
-            )
+                    Text(
+                        text = easyQuestion.value.text,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .padding(20.dp)
+                            .width(350.dp)
+
+                    )
         }
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(50.dp))
         LazyColumn {
             items(easyQuestion.value.answers) { answer ->
                 AnswerButton(

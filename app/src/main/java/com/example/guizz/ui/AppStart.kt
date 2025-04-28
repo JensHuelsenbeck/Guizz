@@ -28,28 +28,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.guizz.R
 import com.example.guizz.ui.views.HomeScreen
+import com.example.guizz.ui.views.QuizScreen
 
 @Composable
 fun AppStart(
     modifier: Modifier = Modifier
 ) {
-
-
-
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-        Box()
-        {
+        Box {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier
                     .padding(innerPadding)
                     .fillMaxSize()
-
-
             ) {
                 Spacer(Modifier.height(150.dp))
-                HomeScreen()
-
+                QuizScreen()
             }
         }
     }

@@ -21,12 +21,15 @@ fun AnswerButton(
 ) {
 
     Card(
-        modifier = Modifier.combinedClickable(
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+            .combinedClickable(
             onClick = onClick
+
         )
     ) {
         Text(
-            text = "answer",
+            text = answer.text,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(20.dp)
