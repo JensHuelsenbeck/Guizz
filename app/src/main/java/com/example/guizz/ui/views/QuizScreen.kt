@@ -2,6 +2,7 @@ package com.example.guizz.ui.views
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -29,8 +30,8 @@ import com.example.guizz.ui.viewmodel.QuizViewModel
 
 @Composable
 fun QuizScreen(
-    viewModel: QuizViewModel = viewModel(), modifier: Modifier = Modifier
-
+    modifier: Modifier = Modifier,
+    viewModel: QuizViewModel = viewModel(),
 ) {
 
     val easyQuestion = viewModel.fetchQuestion().collectAsState()
@@ -38,17 +39,17 @@ fun QuizScreen(
     var showPopUp by remember { mutableStateOf(false) }
 
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()) {
         Spacer(Modifier.height(50.dp))
         Card {
-                    Text(
-                        text = easyQuestion.value.text,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(20.dp)
-                            .width(350.dp)
+            Text(
+                text = easyQuestion.value.text,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(20.dp)
+                    .width(350.dp)
 
-                    )
+            )
         }
         Spacer(Modifier.height(50.dp))
         LazyColumn {
@@ -103,7 +104,6 @@ fun PopUp(
         )
     }
 }
-
 
 
 @Preview(showBackground = true, heightDp = 720, widthDp = 400)

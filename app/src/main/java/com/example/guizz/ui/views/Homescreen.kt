@@ -25,7 +25,8 @@ fun HomeScreen(
     modifier: Modifier = Modifier) {
     Text(
         text = "Welcome to GUIZZ",
-
+        style = MaterialTheme.typography.titleLarge,
+        fontWeight = FontWeight.Bold
         )
     Spacer(Modifier.height(25.dp))
     Image(
@@ -37,7 +38,8 @@ fun HomeScreen(
     Spacer(Modifier.height(25.dp))
     Text(
         text = "Presented by Guenther Lauch",
-
+        style = MaterialTheme.typography.titleMedium,
+        fontWeight = FontWeight.Bold
         )
     Spacer(Modifier.height(25.dp))
     Button(
