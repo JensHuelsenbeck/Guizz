@@ -10,8 +10,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -23,12 +25,12 @@ import com.example.guizz.ui.viewmodel.QuizViewModel
 
 @Composable
 fun QuizScreen(
-    viewModel: QuizViewModel = viewModel(),
-    modifier: Modifier = Modifier
+    viewModel: QuizViewModel = viewModel(), modifier: Modifier = Modifier
 
 ) {
 
-    val easyQuestion by viewModel.easyQuestion.collectAsState()
+    val easyQuestion = viewModel.fetchQuestion()
+    var clickedRightAnswer by remember { mutableStateOf(false) }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Card {
@@ -42,10 +44,16 @@ fun QuizScreen(
         }
         Spacer(Modifier.height(20.dp))
         LazyColumn {
-            items(easyQuestion.answers) { answer ->
+            items(easyQuestion.value.answers) { answer ->
                 AnswerButton(
-                    answer = answer,
-                    onClick = {})
+                    answer = answer, onClick = {
+                        if (answer.isRight) {
+                            viewModel.fetchQuestion()
+                            clickedRightAnswer = true
+                        } else {
+
+                        }
+                    })
 
             }
         }

@@ -3,8 +3,10 @@ package com.example.guizz.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.guizz.ui.data.easyQuestionList
+import com.example.guizz.ui.model.Question
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -24,5 +26,17 @@ class QuizViewModel:ViewModel() {
         initialValue = easyQuestionList.random()
     )
 
+
+
+    fun fetchQuestion(): StateFlow<Question> {
+        val easyQuestion = easyQuestions.map { questions ->
+            questions.random()
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            initialValue = easyQuestionList.random()
+        )
+        return easyQuestion
+    }
 
 }
