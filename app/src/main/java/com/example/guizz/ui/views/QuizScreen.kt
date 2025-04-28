@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.guizz.ui.components.AnswerButton
+
 import com.example.guizz.ui.viewmodel.QuizViewModel
 
 @Composable
@@ -30,7 +33,9 @@ fun QuizScreen(
 ) {
 
     val easyQuestion = viewModel.fetchQuestion()
-    var clickedRightAnswer by remember { mutableStateOf(false) }
+    var clickedAnswer by remember { mutableStateOf(false) }
+    var showPopUp by remember { mutableStateOf(false) }
+
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Card {
@@ -49,16 +54,54 @@ fun QuizScreen(
                     answer = answer, onClick = {
                         if (answer.isRight) {
                             viewModel.fetchQuestion()
-                            clickedRightAnswer = true
+                            clickedAnswer = true
+                            showPopUp = true
+                            viewModel.deleteQuestion(easyQuestion.value)
                         } else {
-
+                            showPopUp = true
                         }
                     })
-
             }
         }
     }
+    if (showPopUp) {
+        PopUp(
+            onDismissRequest = {},
+            onConfirm = {},
+            clickedAnswer = clickedAnswer,
+            modifier = modifier
+        )
+    }
 }
+
+@Composable
+fun PopUp(
+    onDismissRequest: () -> Unit,
+    onConfirm: () -> Unit,
+    clickedAnswer: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    if (clickedAnswer) {
+        AlertDialog(
+            onDismissRequest = { },
+            dismissButton = { TextButton(onClick = onDismissRequest) { "Beenden" } },
+            confirmButton = { TextButton(onClick = onConfirm) { "Nächste Frage!" } },
+            title = { "Richtige Antwort" },
+            text = { "Willst du weiterspielen?" },
+            modifier = modifier
+        )
+    } else {
+        AlertDialog(
+            onDismissRequest = { },
+            confirmButton = { TextButton(onClick = onConfirm) { Text("In die Schule gehen") } },
+            title = { "Na? Auch nur Kreide geholt?" },
+            text = { "Du Lauch, hast verkackt. Dann fang mal von Vorne an." },
+            modifier = modifier
+        )
+    }
+}
+
+
 
 @Preview(showBackground = true, heightDp = 720, widthDp = 400)
 @Composable

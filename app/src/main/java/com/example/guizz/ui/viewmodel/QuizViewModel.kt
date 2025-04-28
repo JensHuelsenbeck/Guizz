@@ -26,8 +26,6 @@ class QuizViewModel:ViewModel() {
         initialValue = easyQuestionList.random()
     )
 
-
-
     fun fetchQuestion(): StateFlow<Question> {
         val easyQuestion = easyQuestions.map { questions ->
             questions.random()
@@ -37,6 +35,10 @@ class QuizViewModel:ViewModel() {
             initialValue = easyQuestionList.random()
         )
         return easyQuestion
+    }
+// Zum temporären Löschen, damit Frage nicht doppelt aufgerufen werden kann
+    fun deleteQuestion(question: Question) {
+        _easyQuestions.value -= question
     }
 
 }
