@@ -5,7 +5,7 @@ import com.example.guizz.ui.model.Answer
 import com.example.guizz.ui.model.Difficulty
 import com.example.guizz.ui.model.Question
 
-val easyQuestions = listOf<Question>(
+val Questions = listOf<Question>(
 
     Question(
         text = "Was ist die Hauptstadt von Deutschland?",
