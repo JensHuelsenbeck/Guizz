@@ -37,7 +37,6 @@ fun QuizScreen(
 
     var clickedAnswer by remember { mutableStateOf(false) }
     var showPopUp by remember { mutableStateOf(false) }
-    var rightAnswers by remember { mutableIntStateOf(0)  }
     val question by viewModel.tempQuestion.collectAsState()
 
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()) {
@@ -76,8 +75,8 @@ fun QuizScreen(
                 showPopUp = false
             },
             onConfirm = {
-                viewModel.fetchQuestion()
-                viewModel.deleteQuestion(question = question, rightAnswers = rightAnswers)
+                viewModel.loadNextQuestion()
+                viewModel.deleteQuestion(question = question)
                 showPopUp = false
                 clickedAnswer = false
             },
@@ -102,8 +101,12 @@ fun PopUp(
             dismissButton = { TextButton(onClick = { onDismissRequest() }) { Text("Beenden") } },
             confirmButton = { TextButton(onClick = { onConfirm() }) { Text("Nächste Frage!") } },
             title = { Text("Richtige Antwort") },
-            text = { Text("Willst du weiterspielen?" +
-                    "\nRichtige Antworten: $rightAnswers") },
+            text = {
+                Text(
+                    "Willst du weiterspielen?" +
+                            "\nRichtige Antworten: $rightAnswers"
+                )
+            },
             modifier = modifier
         )
     } else {
@@ -111,8 +114,12 @@ fun PopUp(
             onDismissRequest = { },
             confirmButton = { TextButton(onClick = { onDismissRequest() }) { Text("In die Schule gehen") } },
             title = { Text("Na? Auch nur Kreide geholt?") },
-            text = { Text("Du Lauch hast verkackt. Dann fang mal von Vorne an." +
-                    "\nRichtige Antworten: $rightAnswers") },
+            text = {
+                Text(
+                    "Du Lauch hast verkackt. Dann fang mal von Vorne an." +
+                            "\nRichtige Antworten: $rightAnswers"
+                )
+            },
             modifier = modifier
         )
     }

@@ -1,13 +1,9 @@
 package com.example.guizz.ui.viewmodel
 
 import android.util.Log
-import androidx.compose.material3.Text
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.guizz.ui.data.easyQuestionList
@@ -36,11 +32,12 @@ class QuizViewModel : ViewModel() {
 
     var rightAnswers by mutableIntStateOf(0)
 
-val tempQuestion = fetchQuestion()
-
+    private var _tempQuestion: StateFlow<Question> = fetchQuestion()
+    val tempQuestion: StateFlow<Question> get() = _tempQuestion
 
     fun fetchQuestion(): StateFlow<Question> {
-        if (rightAnswers <= 2) {
+
+        if (rightAnswers <= 3) {
             val question = easyQuestions.map { questions ->
                 questions.random()
 
@@ -52,7 +49,8 @@ val tempQuestion = fetchQuestion()
                 )
             Log.d("fetchedQuestion ", "Easy wurde gefetched")
             return question
-        } else if (rightAnswers <= 5) {
+
+        } else if (rightAnswers <= 6) {
             val question = mediumQuestions.map { questions ->
                 questions.random()
             }
@@ -77,8 +75,12 @@ val tempQuestion = fetchQuestion()
         }
     }
 
+    fun loadNextQuestion() {
+        _tempQuestion = fetchQuestion()
+    }
+
     // Zum temporären Löschen, damit Frage nicht doppelt aufgerufen werden kann
-    fun deleteQuestion(question: Question, rightAnswers: Int) {
+    fun deleteQuestion(question: Question) {
         if (rightAnswers <= 3) {
             _easyQuestions.value -= question
 
