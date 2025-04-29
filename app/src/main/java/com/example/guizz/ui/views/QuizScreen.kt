@@ -15,35 +15,35 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.guizz.ui.components.AnswerButton
-
 import com.example.guizz.ui.viewmodel.QuizViewModel
 
 @Composable
 fun QuizScreen(
     modifier: Modifier = Modifier,
     viewModel: QuizViewModel = viewModel(),
+    onNavigateToHomeScreen: () -> Unit
 ) {
 
-    val easyQuestion = viewModel.fetchQuestion().collectAsState()
+    val easyQuestion by viewModel.fetchQuestion().collectAsState()
     var clickedAnswer by remember { mutableStateOf(false) }
     var showPopUp by remember { mutableStateOf(false) }
-
+    var rightAnswers by remember { mutableIntStateOf(0)  }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()) {
         Spacer(Modifier.height(50.dp))
         Card {
             Text(
-                text = easyQuestion.value.text,
+                text = easyQuestion.text,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(20.dp)
@@ -53,14 +53,15 @@ fun QuizScreen(
         }
         Spacer(Modifier.height(50.dp))
         LazyColumn {
-            items(easyQuestion.value.answers) { answer ->
+            items(easyQuestion.answers) { answer ->
                 AnswerButton(
                     answer = answer, onClick = {
                         if (answer.isRight) {
                             viewModel.fetchQuestion()
                             clickedAnswer = true
                             showPopUp = true
-                            viewModel.deleteQuestion(easyQuestion.value)
+                            rightAnswers += 1
+
                         } else {
                             showPopUp = true
                         }
@@ -70,9 +71,17 @@ fun QuizScreen(
     }
     if (showPopUp) {
         PopUp(
-            onDismissRequest = {},
-            onConfirm = {},
+            onDismissRequest = {
+                onNavigateToHomeScreen()
+                showPopUp = false
+            },
+            onConfirm = {
+                viewModel.fetchQuestion()
+                viewModel.deleteQuestion(question = easyQuestion)
+                showPopUp = false
+            },
             clickedAnswer = clickedAnswer,
+            rightAnswers = rightAnswers,
             modifier = modifier
         )
     }
@@ -83,31 +92,28 @@ fun PopUp(
     onDismissRequest: () -> Unit,
     onConfirm: () -> Unit,
     clickedAnswer: Boolean,
+    rightAnswers: Int,
     modifier: Modifier = Modifier,
 ) {
     if (clickedAnswer) {
         AlertDialog(
             onDismissRequest = { },
-            dismissButton = { TextButton(onClick = onDismissRequest) { "Beenden" } },
-            confirmButton = { TextButton(onClick = onConfirm) { "Nächste Frage!" } },
-            title = { "Richtige Antwort" },
-            text = { "Willst du weiterspielen?" },
+            dismissButton = { TextButton(onClick = { onDismissRequest() }) { Text("Beenden") } },
+            confirmButton = { TextButton(onClick = { onConfirm() }) { Text("Nächste Frage!") } },
+            title = { Text("Richtige Antwort") },
+            text = { Text("Willst du weiterspielen?" +
+                    "\nRichtige Antworten: $rightAnswers") },
             modifier = modifier
         )
     } else {
         AlertDialog(
             onDismissRequest = { },
-            confirmButton = { TextButton(onClick = onConfirm) { Text("In die Schule gehen") } },
-            title = { "Na? Auch nur Kreide geholt?" },
-            text = { "Du Lauch, hast verkackt. Dann fang mal von Vorne an." },
+            confirmButton = { TextButton(onClick = { onDismissRequest() }) { Text("In die Schule gehen") } },
+            title = { Text("Na? Auch nur Kreide geholt?") },
+            text = { Text("Du Lauch hast verkackt. Dann fang mal von Vorne an." +
+                    "Richtige Antworten: $rightAnswers") },
             modifier = modifier
         )
     }
 }
 
-
-@Preview(showBackground = true, heightDp = 720, widthDp = 400)
-@Composable
-private fun QuizScreenPreview() {
-    QuizScreen()
-}

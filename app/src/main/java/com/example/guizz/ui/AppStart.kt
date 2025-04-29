@@ -1,34 +1,43 @@
 package com.example.guizz.ui
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.guizz.HomeScreenRoute
+import com.example.guizz.QuizScreenRoute
 import com.example.guizz.ui.views.HomeScreen
+import com.example.guizz.ui.views.QuizScreen
 
 @Composable
 fun AppStart(
     modifier: Modifier = Modifier
 ) {
-    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-        Box {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
+
+    val navController = rememberNavController()
+
+    Scaffold { innerPadding ->
+        Column {
+            Spacer(Modifier.height(80.dp))
+            NavHost(
+                navController = navController,
+                startDestination = HomeScreenRoute,
+                modifier = Modifier.padding(innerPadding)
             ) {
-                Spacer(Modifier.height(150.dp))
-                //QuizScreen()
-                 HomeScreen()
+                composable<HomeScreenRoute> {
+                    HomeScreen(onNavigationToQuizScreen = { navController.navigate(QuizScreenRoute) })
+                }
+                composable<QuizScreenRoute> {
+                    QuizScreen(onNavigateToHomeScreen = { navController.navigate(HomeScreenRoute) })
+                }
             }
         }
     }
