@@ -57,7 +57,6 @@ fun QuizScreen(
                 AnswerButton(
                     answer = answer, onClick = {
                         if (answer.isRight) {
-                            viewModel.fetchQuestion()
                             clickedAnswer = true
                             showPopUp = true
                             rightAnswers += 1
@@ -79,6 +78,7 @@ fun QuizScreen(
                 viewModel.fetchQuestion()
                 viewModel.deleteQuestion(question = easyQuestion)
                 showPopUp = false
+                clickedAnswer = false
             },
             clickedAnswer = clickedAnswer,
             rightAnswers = rightAnswers,
