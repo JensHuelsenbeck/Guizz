@@ -34,16 +34,17 @@ fun QuizScreen(
     onNavigateToHomeScreen: () -> Unit
 ) {
 
-    val easyQuestion by viewModel.fetchQuestion().collectAsState()
+
     var clickedAnswer by remember { mutableStateOf(false) }
     var showPopUp by remember { mutableStateOf(false) }
     var rightAnswers by remember { mutableIntStateOf(0)  }
+    val question by viewModel.tempQuestion.collectAsState()
 
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()) {
         Spacer(Modifier.height(50.dp))
         Card {
             Text(
-                text = easyQuestion.text,
+                text = question.text,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(20.dp)
@@ -53,13 +54,13 @@ fun QuizScreen(
         }
         Spacer(Modifier.height(50.dp))
         LazyColumn {
-            items(easyQuestion.answers) { answer ->
+            items(question.answers) { answer ->
                 AnswerButton(
                     answer = answer, onClick = {
                         if (answer.isRight) {
                             clickedAnswer = true
                             showPopUp = true
-                            rightAnswers += 1
+                            viewModel.rightAnswers += 1
 
                         } else {
                             showPopUp = true
@@ -76,12 +77,12 @@ fun QuizScreen(
             },
             onConfirm = {
                 viewModel.fetchQuestion()
-                viewModel.deleteQuestion(question = easyQuestion)
+                viewModel.deleteQuestion(question = question, rightAnswers = rightAnswers)
                 showPopUp = false
                 clickedAnswer = false
             },
             clickedAnswer = clickedAnswer,
-            rightAnswers = rightAnswers,
+            rightAnswers = viewModel.rightAnswers,
             modifier = modifier
         )
     }
@@ -111,7 +112,7 @@ fun PopUp(
             confirmButton = { TextButton(onClick = { onDismissRequest() }) { Text("In die Schule gehen") } },
             title = { Text("Na? Auch nur Kreide geholt?") },
             text = { Text("Du Lauch hast verkackt. Dann fang mal von Vorne an." +
-                    "Richtige Antworten: $rightAnswers") },
+                    "\nRichtige Antworten: $rightAnswers") },
             modifier = modifier
         )
     }
