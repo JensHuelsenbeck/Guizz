@@ -15,14 +15,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.guizz.ui.components.AnswerList
 import com.example.guizz.ui.model.Answer
 import com.example.guizz.ui.viewmodel.QuizViewModel
 
 @Composable
 fun QuizScreen(
-    modifier: Modifier = Modifier,
     quizViewModel: QuizViewModel,
     onNavigateToEndScreen: (Answer) -> Unit
 
@@ -44,7 +42,7 @@ fun QuizScreen(
         Spacer(Modifier.height(50.dp))
         AnswerList(
             question = question,
-            onNavigateToEndScreen =  onNavigateToEndScreen ,
+            onNavigateToEndScreen =  onNavigateToEndScreen,
             quizViewModel = quizViewModel
         )
     }
