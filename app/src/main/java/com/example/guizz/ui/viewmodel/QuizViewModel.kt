@@ -25,7 +25,7 @@ class QuizViewModel : ViewModel() {
     private val _hardQuestions = MutableStateFlow(hardQuestionList)
     val hardQuestions = _hardQuestions.asStateFlow()
 
-    var rightAnswers by mutableIntStateOf(9)
+    var rightAnswers by mutableIntStateOf(0)
 
     private val _tempQuestion = MutableStateFlow(fetchQuestion())
     val tempQuestion: StateFlow<Question> = _tempQuestion

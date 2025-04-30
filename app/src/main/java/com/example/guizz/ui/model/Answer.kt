@@ -7,3 +7,7 @@ data class Answer(
     val text: String,
     val isRight: Boolean
 )
+enum class AnswerState {
+    DEFAULT,
+    REMOVED
+}

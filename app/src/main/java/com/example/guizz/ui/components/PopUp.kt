@@ -34,7 +34,6 @@ fun PopUp(
                         text = "Nächste Frage!",
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.bodyLarge
-
                     )
                 }
             },
