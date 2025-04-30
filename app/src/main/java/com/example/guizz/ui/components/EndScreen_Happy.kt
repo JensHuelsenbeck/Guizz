@@ -26,15 +26,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.guizz.R
 import com.example.guizz.ui.viewmodel.EndScreenViewModel
+import com.example.guizz.ui.viewmodel.QuizViewModel
 
 @Composable
 fun EndScreenHappy(
     onNavigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
-    endScreenViewModel: EndScreenViewModel,
+    quizViewModel: QuizViewModel
 ) {
 
-    if (endScreenViewModel.answer.isRight) {
+
         Column(
             modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -60,11 +61,14 @@ fun EndScreenHappy(
             )
 
             Button(
-                onClick = { onNavigateToHome() },
+                onClick = {
+                    onNavigateToHome()
+                    quizViewModel.endLauchGame()
+                          },
                 modifier = modifier.padding(top = 90.dp)
             ) {
                 Text(
-                    text = "Nie wieder Schule!!!!111!1.",
+                    text = "Nie wieder Schule!!11!",
                     color = Color.White,
                     style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.Center,
@@ -76,7 +80,7 @@ fun EndScreenHappy(
             }
         }
     }
-}
+
 
 @Preview
 @Composable

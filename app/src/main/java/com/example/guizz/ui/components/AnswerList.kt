@@ -1,5 +1,6 @@
 package com.example.guizz.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -17,13 +18,13 @@ import com.example.guizz.ui.viewmodel.QuizViewModel
 fun AnswerList(
     question: Question,
     onNavigateToEndScreen: (Answer) -> Unit,
-    viewModel: QuizViewModel,
+    quizViewModel: QuizViewModel,
     modifier: Modifier = Modifier,
 ) {
 
     var clickedAnswer by remember { mutableStateOf(false) }
     var showPopUp by remember { mutableStateOf(false) }
-    var tempAnswer = Answer(text = "", isRight = false)
+    var tempAnswer by remember { mutableStateOf<Answer?>(null) }
 
     LazyColumn {
         items(question.answers) { answer ->
@@ -33,12 +34,13 @@ fun AnswerList(
                     if (answer.isRight) {
                         clickedAnswer = true
                         showPopUp = true
-                        viewModel.rightAnswers += 1
-                        tempAnswer = answer
 
+                        tempAnswer = answer
                     } else {
                         showPopUp = true
                         tempAnswer = answer
+
+
                     }
                 },
                 onNavigateToEndScreen = { onNavigateToEndScreen(answer) },
@@ -48,17 +50,21 @@ fun AnswerList(
     if (showPopUp) {
         PopUp(
             onNavigateToEndScreen = {
-                onNavigateToEndScreen(tempAnswer)
+                onNavigateToEndScreen(tempAnswer!!)
                 showPopUp = false
+
+
             },
             onConfirm = {
-                viewModel.loadNextQuestion()
-                viewModel.deleteQuestion(question = question)
+                quizViewModel.rightAnswers += 1
+                quizViewModel.loadNextQuestion()
+                quizViewModel.deleteQuestion(question = question)
                 showPopUp = false
                 clickedAnswer = false
+                Log.d("PopUponConfirm", "Counter +1")
             },
             clickedAnswer = clickedAnswer,
-            rightAnswers = viewModel.rightAnswers,
+            rightAnswers = quizViewModel.rightAnswers,
             modifier = modifier
         )
     }

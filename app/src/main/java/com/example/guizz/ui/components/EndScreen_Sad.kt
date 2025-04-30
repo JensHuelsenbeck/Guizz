@@ -44,7 +44,7 @@ fun EndScreenSad(
 
     var isOffended by remember { mutableStateOf(false) }
 
-    if (endScreenViewModel.answer.isRight) {
+
         Column(
             modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -68,9 +68,12 @@ fun EndScreenSad(
                         "\n Du hast ${quizViewModel.rightAnswers} Fragen richtig beantwortet.",
                 fontSize = 16.sp
             )
-            Row {
+            Column {
                 Button(
-                    onClick = { onNavigateToHome() },
+                    onClick = {
+                        onNavigateToHome()
+                        quizViewModel.endLauchGame()
+                              },
                     modifier = modifier.padding(top = 90.dp)
                 ) {
                     Text(
@@ -101,7 +104,7 @@ fun EndScreenSad(
                 }
             }
         }
-    }
+
     if (isOffended)
         AlertDialog(
             onDismissRequest = { },
@@ -109,6 +112,7 @@ fun EndScreenSad(
                 TextButton(onClick = {
                     onNavigateToHome()
                     isOffended = false
+                    quizViewModel.endLauchGame()
                 }) { Text("In die Schule gehen") }
             },
             title = { Text("Na? Auch nur Kreide geholt?") },

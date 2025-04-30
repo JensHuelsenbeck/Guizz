@@ -1,5 +1,6 @@
 package com.example.guizz.ui.views
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -14,25 +15,23 @@ fun EndScreen(
     onNavigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
     endScreenViewModel: EndScreenViewModel = viewModel(),
-    quizViewModel: QuizViewModel = viewModel()
+    quizViewModel: QuizViewModel
 ) {
 
-    if (endScreenViewModel.answer.isRight) {
+    Log.d("EndScreen", "Leerer EndScreen wurde geladen")
+    if (quizViewModel.rightAnswers >= 10 ) {
         EndScreenHappy(
             onNavigateToHome = onNavigateToHome,
-            endScreenViewModel = endScreenViewModel
+            quizViewModel = quizViewModel
         )
+        Log.d("EndScreenHappy", "EndScreen wurde geladen")
     } else {
         EndScreenSad(
             onNavigateToHome = onNavigateToHome,
             endScreenViewModel = endScreenViewModel,
             quizViewModel = quizViewModel
         )
+        Log.d("EndScreenSad", "EndScreen wurde geladen")
     }
 }
 
-@Preview
-@Composable
-private fun EndScreenPreview() {
-
-}
