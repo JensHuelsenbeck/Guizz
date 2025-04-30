@@ -5,6 +5,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,7 +23,7 @@ fun AnswerButton(
 ) {
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .padding(vertical = 8.dp)
             .combinedClickable(
                 onClick = if (answer.isRight) onClickOnAnswer else onNavigateToEndScreen
@@ -33,7 +34,8 @@ fun AnswerButton(
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(20.dp)
-                .width(200.dp)
+                .width(200.dp),
+            style = MaterialTheme.typography.titleMedium
         )
     }
 }

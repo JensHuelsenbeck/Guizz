@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.asStateFlow
 class QuizViewModel : ViewModel() {
 
 
-
     private val _easyQuestions = MutableStateFlow(easyQuestionList)
     val easyQuestions = _easyQuestions.asStateFlow()
 
@@ -26,7 +25,7 @@ class QuizViewModel : ViewModel() {
     private val _hardQuestions = MutableStateFlow(hardQuestionList)
     val hardQuestions = _hardQuestions.asStateFlow()
 
-    var rightAnswers by mutableIntStateOf(0)
+    var rightAnswers by mutableIntStateOf(9)
 
     private val _tempQuestion = MutableStateFlow(fetchQuestion())
     val tempQuestion: StateFlow<Question> = _tempQuestion
@@ -41,10 +40,12 @@ class QuizViewModel : ViewModel() {
                 Log.d("fetchedQuestion", "Easy wurde gefetched")
                 easyQuestions.value.random()
             }
+
             rightAnswers <= 6 -> {
                 Log.d("fetchedQuestion", "Medium wurde gefetched")
                 mediumQuestions.value.random()
             }
+
             else -> {
                 Log.d("fetchedQuestion", "Hard wurde gefetched")
                 hardQuestions.value.random()
@@ -56,7 +57,7 @@ class QuizViewModel : ViewModel() {
     fun deleteQuestion(question: Question) {
         if (rightAnswers <= 3) {
             _easyQuestions.value -= question
-                Log.d("deleteQuestion ", question.text + " wurde gelöscht")
+            Log.d("deleteQuestion ", question.text + " wurde gelöscht")
         } else if (rightAnswers <= 6) {
             _mediumQuestions.value -= question
             Log.d("deleteQuestion ", question.text + " wurde gelöscht")
@@ -65,6 +66,7 @@ class QuizViewModel : ViewModel() {
             Log.d("deleteQuestion ", question.text + " wurde gelöscht")
         }
     }
+
     fun endLauchGame() {
         rightAnswers = 0
         Log.d("LauchGame ", "LauchGame.exe wurde resettet.")

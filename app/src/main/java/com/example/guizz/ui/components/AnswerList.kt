@@ -51,9 +51,8 @@ fun AnswerList(
         PopUp(
             onNavigateToEndScreen = {
                 onNavigateToEndScreen(tempAnswer!!)
+                quizViewModel.rightAnswers += 1
                 showPopUp = false
-
-
             },
             onConfirm = {
                 quizViewModel.rightAnswers += 1

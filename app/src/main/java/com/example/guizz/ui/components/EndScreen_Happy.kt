@@ -25,7 +25,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.guizz.R
-import com.example.guizz.ui.viewmodel.EndScreenViewModel
 import com.example.guizz.ui.viewmodel.QuizViewModel
 
 @Composable
@@ -37,7 +36,7 @@ fun EndScreenHappy(
 
 
         Column(
-            modifier.fillMaxSize(),
+            modifier.fillMaxSize().padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(Modifier.height(25.dp))
@@ -56,7 +55,7 @@ fun EndScreenHappy(
 
             Text(
                 text = "Dein Name ist Lauchus Maximus, erster seines Namens!" +
-                        "\n Du hast 10 Fragen richtig beantwortet. Du geiler Lauch.",
+                        "\nDu hast 10 Fragen richtig beantwortet. Du geiler Lauch.",
                 fontSize = 16.sp
             )
 
