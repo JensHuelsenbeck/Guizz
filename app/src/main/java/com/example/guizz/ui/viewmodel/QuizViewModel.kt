@@ -83,9 +83,7 @@ class QuizViewModel : ViewModel() {
     fun deleteQuestion(question: Question) {
         if (rightAnswers <= 3) {
             _easyQuestions.value -= question
-
                 Log.d("deleteQuestion ", question.text + " wurde gelöscht")
-
         } else if (rightAnswers <= 6) {
             _mediumQuestions.value -= question
         } else {

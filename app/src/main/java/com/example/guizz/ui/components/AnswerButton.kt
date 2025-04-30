@@ -16,7 +16,8 @@ import com.example.guizz.ui.model.Answer
 @Composable
 fun AnswerButton(
     answer: Answer,
-    onClick: () -> Unit,
+    onClickOnAnswer: () -> Unit,
+    onNavigateToEndScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -24,9 +25,8 @@ fun AnswerButton(
         modifier = Modifier
             .padding(vertical = 8.dp)
             .combinedClickable(
-            onClick = onClick
-
-        )
+                onClick = if (answer.isRight) onClickOnAnswer else onNavigateToEndScreen
+            )
     ) {
         Text(
             text = answer.text,

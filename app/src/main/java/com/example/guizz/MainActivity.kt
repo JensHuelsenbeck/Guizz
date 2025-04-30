@@ -23,18 +23,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    GuizzTheme {
-        Greeting("Android")
-    }
-}
+/*
+EndScreen -> Beleidigt Button, Button zum HomeScreen
+BeleidigtScreen -> BUtton zum HomeScreen
+Farben/Theme -> Einfärben der AnswerButton -> Animation (alphaAnimation)
+50:50 Joker
+ */

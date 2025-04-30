@@ -12,8 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.guizz.HomeScreenRoute
-import com.example.guizz.QuizScreenRoute
+import com.example.guizz.ui.views.EndScreen
 import com.example.guizz.ui.views.HomeScreen
 import com.example.guizz.ui.views.QuizScreen
 
@@ -36,7 +35,21 @@ fun AppStart(
                     HomeScreen(onNavigationToQuizScreen = { navController.navigate(QuizScreenRoute) })
                 }
                 composable<QuizScreenRoute> {
-                    QuizScreen(onNavigateToHomeScreen = { navController.navigate(HomeScreenRoute) })
+                    QuizScreen(
+                        onNavigateToEndScreen = { answer ->
+                            navController.navigate(
+                                EndScreenRoute(
+                                    text = answer.text,
+                                    isRight = answer.isRight
+                                )
+                            )
+                        }
+                    )
+                }
+                composable<EndScreenRoute> {
+                    EndScreen(
+                        onNavigateToHome = { navController.navigate(HomeScreenRoute) },
+                    )
                 }
             }
         }

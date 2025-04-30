@@ -25,18 +25,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.guizz.ui.components.AnswerButton
+import com.example.guizz.ui.components.AnswerList
+import com.example.guizz.ui.model.Answer
 import com.example.guizz.ui.viewmodel.QuizViewModel
 
 @Composable
 fun QuizScreen(
     modifier: Modifier = Modifier,
     viewModel: QuizViewModel = viewModel(),
-    onNavigateToHomeScreen: () -> Unit
+    onNavigateToEndScreen: (Answer) -> Unit
+
 ) {
-
-
-    var clickedAnswer by remember { mutableStateOf(false) }
-    var showPopUp by remember { mutableStateOf(false) }
     val question by viewModel.tempQuestion.collectAsState()
 
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()) {
@@ -52,76 +51,13 @@ fun QuizScreen(
             )
         }
         Spacer(Modifier.height(50.dp))
-        LazyColumn {
-            items(question.answers) { answer ->
-                AnswerButton(
-                    answer = answer, onClick = {
-                        if (answer.isRight) {
-                            clickedAnswer = true
-                            showPopUp = true
-                            viewModel.rightAnswers += 1
-
-                        } else {
-                            showPopUp = true
-                        }
-                    })
-            }
-        }
-    }
-    if (showPopUp) {
-        PopUp(
-            onDismissRequest = {
-                onNavigateToHomeScreen()
-                showPopUp = false
-            },
-            onConfirm = {
-                viewModel.loadNextQuestion()
-                viewModel.deleteQuestion(question = question)
-                showPopUp = false
-                clickedAnswer = false
-            },
-            clickedAnswer = clickedAnswer,
-            rightAnswers = viewModel.rightAnswers,
-            modifier = modifier
+        AnswerList(
+            question = question,
+            onNavigateToEndScreen =  onNavigateToEndScreen ,
+            viewModel = viewModel()
         )
     }
 }
 
-@Composable
-fun PopUp(
-    onDismissRequest: () -> Unit,
-    onConfirm: () -> Unit,
-    clickedAnswer: Boolean,
-    rightAnswers: Int,
-    modifier: Modifier = Modifier,
-) {
-    if (clickedAnswer) {
-        AlertDialog(
-            onDismissRequest = { },
-            dismissButton = { TextButton(onClick = { onDismissRequest() }) { Text("Beenden") } },
-            confirmButton = { TextButton(onClick = { onConfirm() }) { Text("Nächste Frage!") } },
-            title = { Text("Richtige Antwort") },
-            text = {
-                Text(
-                    "Willst du weiterspielen?" +
-                            "\nRichtige Antworten: $rightAnswers"
-                )
-            },
-            modifier = modifier
-        )
-    } else {
-        AlertDialog(
-            onDismissRequest = { },
-            confirmButton = { TextButton(onClick = { onDismissRequest() }) { Text("In die Schule gehen") } },
-            title = { Text("Na? Auch nur Kreide geholt?") },
-            text = {
-                Text(
-                    "Du Lauch hast verkackt. Dann fang mal von Vorne an." +
-                            "\nRichtige Antworten: $rightAnswers"
-                )
-            },
-            modifier = modifier
-        )
-    }
-}
+
 
