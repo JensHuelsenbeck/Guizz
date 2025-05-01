@@ -58,11 +58,13 @@ fun AnswerList(
         }
     }
     if (showPopUp) {
+        Log.d("Answer Counter", "Counter = ${quizViewModel.rightAnswers}")
         PopUp(
             onNavigateToEndScreen = {
                 onNavigateToEndScreen(tempAnswer!!)
                 quizViewModel.rightAnswers += 1
                 showPopUp = false
+
             },
             onConfirm = {
                 quizViewModel.rightAnswers += 1

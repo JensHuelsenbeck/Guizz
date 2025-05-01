@@ -1,6 +1,7 @@
 package com.example.guizz.ui.components
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -49,19 +50,19 @@ fun EndScreenSad(
     onNavigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
     quizViewModel: QuizViewModel,
-    @DrawableRes gifRes: Int
+    @DrawableRes gifRes: Int = R.drawable.giphy
 ) {
     var isOffended by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     // Custom ImageLoader mit GIF-Support
     val imageLoader = ImageLoader.Builder(context).components {
-            if (Build.VERSION.SDK_INT >= 28) {
-                add(ImageDecoderDecoder.Factory())
-            } else {
-                add(GifDecoder.Factory())
-            }
-        }.build()
+        if (Build.VERSION.SDK_INT >= 28) {
+            add(ImageDecoderDecoder.Factory())
+        } else {
+            add(GifDecoder.Factory())
+        }
+    }.build()
 
     Column(
         modifier.fillMaxSize(),
@@ -160,6 +161,7 @@ fun EndScreenSad(
         },
         modifier = modifier,
     )
+    Log.d("Answer Sad Counter", "Counter = ${quizViewModel.rightAnswers}")
 }
 
 

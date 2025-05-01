@@ -26,8 +26,10 @@ class QuizViewModel : ViewModel() {
 
     var rightAnswers by mutableIntStateOf(0)
 
+
     private val _tempQuestion = MutableStateFlow(fetchQuestion())
     val tempQuestion: StateFlow<Question> = _tempQuestion
+
 
     fun loadNextQuestion() {
         _tempQuestion.value = fetchQuestion()
