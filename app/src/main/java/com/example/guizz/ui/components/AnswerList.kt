@@ -28,9 +28,10 @@ fun AnswerList(
     var clickedAnswer by remember { mutableStateOf(false) }
     var showPopUp by remember { mutableStateOf(false) }
     var tempAnswer by remember { mutableStateOf<Answer?>(null) }
+    var shuffleList = question.answers.shuffled()
 
     LazyColumn(modifier = modifier.padding(top = 8.dp)) {
-        items(question.answers) { answer ->
+        items(shuffleList) { answer ->
             val state = if (clickedAnswer) {
                 // schon geklickt → nur das gewählte in DEFAULT, alle anderen in REMOVED
                 if (answer == tempAnswer) AnswerState.DEFAULT

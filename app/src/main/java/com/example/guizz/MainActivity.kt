@@ -25,8 +25,5 @@ class MainActivity : ComponentActivity() {
 
 
 /*
-EndScreen -> Beleidigt Button, Button zum HomeScreen
-BeleidigtScreen -> BUtton zum HomeScreen
-Farben/Theme -> Einfärben der AnswerButton -> Animation (alphaAnimation)
 50:50 Joker
  */
