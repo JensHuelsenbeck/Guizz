@@ -16,7 +16,6 @@ import com.example.guizz.ui.model.AnswerState
 import com.example.guizz.ui.model.Question
 import com.example.guizz.ui.viewmodel.QuizViewModel
 
-
 @Composable
 fun AnswerList(
     question: Question,
@@ -35,7 +34,7 @@ fun AnswerList(
             val state = if (clickedAnswer) {
                 // schon geklickt → nur das gewählte in DEFAULT, alle anderen in REMOVED
                 if (answer == tempAnswer) AnswerState.DEFAULT
-                else AnswerState.REMOVED
+                else AnswerState.CLICKED
             } else {
                 // noch nichts geklickt → alle in DEFAULT
                 AnswerState.DEFAULT
@@ -46,13 +45,11 @@ fun AnswerList(
                     if (answer.isRight) {
                         clickedAnswer = true
                         showPopUp = true
-
                         tempAnswer = answer
-                    } else {
+                    }
+                    else {
                         showPopUp = true
                         tempAnswer = answer
-
-
                     }
                 },
                 onNavigateToEndScreen = { onNavigateToEndScreen(answer) },

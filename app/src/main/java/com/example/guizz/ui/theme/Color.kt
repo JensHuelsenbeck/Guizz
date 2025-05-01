@@ -5,7 +5,6 @@ import androidx.compose.ui.graphics.Color
 // PRIMARY – für beide Modi gleich
 val Primary = Color(0xFFEE9B4A)
 
-
 // LIGHTMODE
 val PrimaryContainerLight = Color(0xFFFFDD9E)
 val OnPrimaryContainerLight = Color(0xFF5B2600)
@@ -21,9 +20,9 @@ val RightBorderLight = Color(0xFF61B865)
 val WrongBackgroundLight = Color(0xFFFFD8D5)
 val WrongBorderLight = Color(0xFFDB5959)
 
-// DARKMODE
-val PrimaryContainerDark = Color(0xFF382105)
-val OnPrimaryContainerDark = Color(0xFFFFE3CF)
+// DARKMODEColor
+val PrimaryContainerDark = Color(0xFFFFE3CF)
+val OnPrimaryContainerDark =  Color(0xFF382105)
 
 val SecondaryContainerDark = Color(0xFF043E07)
 

@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.guizz.R
@@ -34,55 +33,49 @@ fun EndScreenHappy(
     quizViewModel: QuizViewModel
 ) {
 
+    Column(
+        modifier
+            .fillMaxSize()
+            .padding(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Spacer(Modifier.height(25.dp))
+        Image(
+            painter = painterResource(if (isSystemInDarkTheme()) R.drawable.lauch_happy else R.drawable.lauch_happy),
+            contentDescription = "Guenther Lauch",
+            modifier = Modifier
+                .clip(shape = CircleShape)
+                .size(325.dp)
+        )
+        Text(
+            text = "HeRzLiChEn GlückWUNSCH !1!!111! !!",
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp
+        )
 
-        Column(
-            modifier.fillMaxSize().padding(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Text(
+            text = "Dein Name ist Lauchus Maximus, erster seines Namens!" +
+                    "\nDu hast 10 Fragen richtig beantwortet. Du geiler Lauch.",
+            fontSize = 16.sp
+        )
+
+        Button(
+            onClick = {
+                onNavigateToHome()
+                quizViewModel.endLauchGame()
+            },
+            modifier = modifier.padding(top = 90.dp)
         ) {
-            Spacer(Modifier.height(25.dp))
-            Image(
-                painter = painterResource(if (isSystemInDarkTheme()) R.drawable.lauch_happy else R.drawable.lauch_happy),
-                contentDescription = "Guenther Lauch",
-                modifier = Modifier
-                    .clip(shape = CircleShape)
-                    .size(325.dp)
-            )
             Text(
-                text = "HeRzLiChEn GlückWUNSCH !1!!111! !!",
+                text = "Nie wieder Schule!!11!",
+                color = Color.White,
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
+                modifier = modifier
+                    .padding(8.dp)
+                    .width(150.dp)
             )
-
-            Text(
-                text = "Dein Name ist Lauchus Maximus, erster seines Namens!" +
-                        "\nDu hast 10 Fragen richtig beantwortet. Du geiler Lauch.",
-                fontSize = 16.sp
-            )
-
-            Button(
-                onClick = {
-                    onNavigateToHome()
-                    quizViewModel.endLauchGame()
-                          },
-                modifier = modifier.padding(top = 90.dp)
-            ) {
-                Text(
-                    text = "Nie wieder Schule!!11!",
-                    color = Color.White,
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
-                    modifier = modifier
-                        .padding(8.dp)
-                        .width(150.dp)
-                )
-            }
         }
     }
-
-
-@Preview
-@Composable
-private fun EndScreenPreview() {
-
 }

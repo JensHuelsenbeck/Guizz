@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class QuizViewModel : ViewModel() {
 
-
     private val _easyQuestions = MutableStateFlow(easyQuestionList)
     val easyQuestions = _easyQuestions.asStateFlow()
 

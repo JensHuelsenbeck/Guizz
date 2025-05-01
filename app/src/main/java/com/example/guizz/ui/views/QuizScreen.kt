@@ -44,7 +44,6 @@ fun QuizScreen(
                     .width(350.dp),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold
-
             )
         }
         Spacer(Modifier.height(50.dp))

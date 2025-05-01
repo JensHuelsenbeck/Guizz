@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.guizz.ui.model.Answer
 import com.example.guizz.ui.model.AnswerState
+import com.example.guizz.ui.theme.OnPrimaryContainerLight
 import com.example.guizz.ui.theme.RightBackgroundDark
 import com.example.guizz.ui.theme.RightBackgroundLight
 import com.example.guizz.ui.theme.RightBorderDark
@@ -48,39 +49,32 @@ fun AnswerButton(
 
     val scope = rememberCoroutineScope()
 
-    val textColor = MaterialTheme.colorScheme.onPrimaryContainer
-
     val isDark = isSystemInDarkTheme()
 
+    val textColor = when (state) {
+        AnswerState.DEFAULT -> MaterialTheme.colorScheme.onPrimaryContainer
+        AnswerState.CLICKED -> if (isDark) Color.White else Color.Black
+    }
 
     val backgroundColor = when (state) {
-        AnswerState.DEFAULT ->
-            MaterialTheme.colorScheme.primaryContainer
+        AnswerState.DEFAULT -> MaterialTheme.colorScheme.primaryContainer
 
-        AnswerState.REMOVED ->
-            // statt RIGHT/WRONG jetzt isRight
-            if (answer.isRight) {
-                if (isDark) RightBackgroundDark else RightBackgroundLight
-            } else {
-                if (isDark) WrongBackgroundDark else WrongBackgroundLight
-            }
+        AnswerState.CLICKED -> if (answer.isRight) {
+            if (isDark) RightBackgroundDark else RightBackgroundLight
+        } else {
+            if (isDark) WrongBackgroundDark else WrongBackgroundLight
+        }
     }
-
     // Rahmenfarbe
     val borderColor = when (state) {
-        AnswerState.DEFAULT ->
-            Color.Gray
-
-        AnswerState.REMOVED ->
-            if (answer.isRight) {
-                if (isDark) RightBorderDark else RightBorderLight
-            } else {
-                if (isDark) WrongBorderDark else WrongBorderLight
-            }
+        AnswerState.DEFAULT -> if (isDark) Color.Black else OnPrimaryContainerLight
+        AnswerState.CLICKED -> if (answer.isRight) {
+            if (isDark) RightBorderDark else RightBorderLight
+        } else {
+            if (isDark) WrongBorderDark else WrongBorderLight
+        }
     }
     val shadowColor = if (isDark) borderColor else Color.Black
-
-
 
     Box(
         modifier = modifier
@@ -102,27 +96,26 @@ fun AnswerButton(
                 onClick = {
                     if (answer.isRight) {
                         // direkt den State setzten
-                        state = AnswerState.REMOVED
+                        state = AnswerState.CLICKED
 
                         // Verzögerung und dann Callback
                         scope.launch {
-                            delay(3_000)                 // 3 Sekunden
+                            delay(2_000)                 // 2 Sekunden
                             onClickOnAnswer()
                             state = AnswerState.DEFAULT
                         }
 
                     } else {
-                        state = AnswerState.REMOVED
+                        state = AnswerState.CLICKED
 
                         scope.launch {
-                            delay(3_000)                 // 3 Sekunden
+                            delay(2_000)                 // 2 Sekunden
                             onNavigateToEndScreen()
                             state = AnswerState.DEFAULT
 
                         }
                     }
-                }
-            )
+                })
     ) {
         Text(
             text = answer.text,

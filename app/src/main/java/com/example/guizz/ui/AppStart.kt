@@ -24,7 +24,6 @@ fun AppStart(
     modifier: Modifier = Modifier,
     quizViewModel: QuizViewModel = viewModel()
 ) {
-
     val navController = rememberNavController()
 
     Scaffold { innerPadding ->

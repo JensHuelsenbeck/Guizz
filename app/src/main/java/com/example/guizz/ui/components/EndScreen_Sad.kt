@@ -4,7 +4,9 @@ import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -48,22 +50,18 @@ fun EndScreenSad(
     modifier: Modifier = Modifier,
     quizViewModel: QuizViewModel,
     @DrawableRes gifRes: Int
-
 ) {
-
     var isOffended by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     // Custom ImageLoader mit GIF-Support
-    val imageLoader = ImageLoader.Builder(context)
-        .components {
+    val imageLoader = ImageLoader.Builder(context).components {
             if (Build.VERSION.SDK_INT >= 28) {
                 add(ImageDecoderDecoder.Factory())
             } else {
                 add(GifDecoder.Factory())
             }
-        }
-        .build()
+        }.build()
 
     Column(
         modifier.fillMaxSize(),
@@ -86,8 +84,7 @@ fun EndScreenSad(
         )
 
         Text(
-            text = "Du Lauch hast verkackt. Dann fang mal von Vorne an." +
-                    "\nDu hast ${quizViewModel.rightAnswers} Fragen richtig beantwortet.",
+            text = "Du Lauch hast verkackt. Dann fang mal von Vorne an." + "\nDu hast ${quizViewModel.rightAnswers} Fragen richtig beantwortet.",
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
             style = MaterialTheme.typography.bodyLarge,
@@ -98,8 +95,7 @@ fun EndScreenSad(
             onClick = {
                 onNavigateToHome()
                 quizViewModel.endLauchGame()
-            },
-            modifier = modifier
+            }, modifier = modifier
                 .padding(top = 180.dp)
                 .width(300.dp)
         ) {
@@ -109,13 +105,11 @@ fun EndScreenSad(
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.ExtraBold,
-                modifier = modifier
-                    .padding(8.dp)
+                modifier = modifier.padding(8.dp)
             )
         }
         Button(
-            onClick = { isOffended = true },
-            modifier = modifier
+            onClick = { isOffended = true }, modifier = modifier
                 .padding(top = 16.dp)
                 .width(300.dp)
         ) {
@@ -125,48 +119,47 @@ fun EndScreenSad(
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
-                modifier = modifier
-                    .padding(8.dp)
+                modifier = modifier.padding(8.dp)
             )
         }
     }
 
-    if (isOffended)
-        AlertDialog(
-            onDismissRequest = { },
-            confirmButton = {
+    if (isOffended) AlertDialog(
+        onDismissRequest = { },
+        confirmButton = {
+            Row(
+                modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
+            ) {
                 TextButton(onClick = {
                     onNavigateToHome()
                     isOffended = false
                     quizViewModel.endLauchGame()
-                }) { Text("Nach Hause gehen", fontWeight = FontWeight.Bold) }
-            },
-            title = {
-                Text(
-                    "Deal with it",
-                    textAlign = TextAlign.Center,
-                    modifier = modifier.fillMaxWidth()
-                )
-            },
-            text = {
-                val painter = rememberAsyncImagePainter(
-                    model = ImageRequest.Builder(context)
-                        .data(gifRes)
-                        .build(),
-                    imageLoader = imageLoader
-                )
+                }) {
+                    Text(
+                        "Nach Hause gehen",
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+            }
+        },
+        text = {
+            val painter = rememberAsyncImagePainter(
+                model = ImageRequest.Builder(context).data(gifRes).build(),
+                imageLoader = imageLoader
+            )
 
-                Image(
-                    painter = painter,
-                    contentDescription = "Lade GIF …",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                )
-            },
-            modifier = modifier
-        )
+            Image(
+                painter = painter,
+                contentDescription = "Lade GIF …",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+                    .clip(RoundedCornerShape(8.dp))
+            )
+        },
+        modifier = modifier,
+    )
 }
 
 
