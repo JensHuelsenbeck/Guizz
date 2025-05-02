@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,16 +55,17 @@ fun AnswerButton(
     val textColor = when (state) {
         AnswerState.DEFAULT -> MaterialTheme.colorScheme.onPrimaryContainer
         AnswerState.CLICKED -> if (isDark) Color.White else Color.Black
+        AnswerState.REMOVED -> Color.Gray
     }
 
     val backgroundColor = when (state) {
         AnswerState.DEFAULT -> MaterialTheme.colorScheme.primaryContainer
-
         AnswerState.CLICKED -> if (answer.isRight) {
             if (isDark) RightBackgroundDark else RightBackgroundLight
         } else {
             if (isDark) WrongBackgroundDark else WrongBackgroundLight
         }
+        AnswerState.REMOVED -> Color.LightGray
     }
     // Rahmenfarbe
     val borderColor = when (state) {
@@ -73,8 +75,13 @@ fun AnswerButton(
         } else {
             if (isDark) WrongBorderDark else WrongBorderLight
         }
+        AnswerState.REMOVED -> Color.Gray
     }
     val shadowColor = if (isDark) borderColor else Color.Black
+
+    LaunchedEffect(currentState) {
+        state = currentState
+    }
 
     Box(
         modifier = modifier
@@ -94,28 +101,25 @@ fun AnswerButton(
             )
             .combinedClickable(
                 onClick = {
-                    if (answer.isRight) {
-                        // direkt den State setzten
-                        state = AnswerState.CLICKED
+                    if (state == AnswerState.REMOVED) return@combinedClickable
 
-                        // Verzögerung und dann Callback
+                    if (answer.isRight) {
+                        state = AnswerState.CLICKED
                         scope.launch {
-                            delay(2_000)                 // 2 Sekunden
+                            delay(2000)
                             onClickOnAnswer()
                             state = AnswerState.DEFAULT
                         }
-
                     } else {
                         state = AnswerState.CLICKED
-
                         scope.launch {
-                            delay(2_000)                 // 2 Sekunden
+                            delay(2000)
                             onNavigateToEndScreen()
                             state = AnswerState.DEFAULT
-
                         }
                     }
-                })
+                }
+            )
     ) {
         Text(
             text = answer.text,

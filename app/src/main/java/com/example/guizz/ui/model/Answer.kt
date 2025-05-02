@@ -9,5 +9,6 @@ data class Answer(
 )
 enum class AnswerState {
     DEFAULT,
-    CLICKED
+    CLICKED,
+    REMOVED
 }

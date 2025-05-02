@@ -6,15 +6,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -28,6 +34,11 @@ fun QuizScreen(
     onNavigateToEndScreen: (Answer) -> Unit
 ) {
     val question by quizViewModel.tempQuestion.collectAsState()
+    var activateFiftyFifty by remember { mutableStateOf(false) }
+
+    LaunchedEffect(question) {
+        activateFiftyFifty = false
+    }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()) {
         Spacer(Modifier.height(50.dp))
@@ -46,14 +57,32 @@ fun QuizScreen(
                 fontWeight = FontWeight.SemiBold
             )
         }
+
         Spacer(Modifier.height(50.dp))
+
         AnswerList(
             question = question,
             onNavigateToEndScreen = onNavigateToEndScreen,
-            quizViewModel = quizViewModel
+            quizViewModel = quizViewModel,
+            activateFiftyFifty = activateFiftyFifty
         )
+        Spacer(Modifier.height(70.dp))
+        Button(
+            onClick = { activateFiftyFifty = true },
+            modifier = Modifier.padding(top = 90.dp)
+        ) {
+            Text(
+                text = "50:50",
+                color = Color.White,
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .width(150.dp)
+            )
+        }
     }
 }
-
 
 

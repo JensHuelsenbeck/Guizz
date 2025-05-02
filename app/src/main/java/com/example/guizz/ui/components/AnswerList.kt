@@ -1,6 +1,5 @@
 package com.example.guizz.ui.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,24 +20,30 @@ fun AnswerList(
     question: Question,
     onNavigateToEndScreen: (Answer) -> Unit,
     quizViewModel: QuizViewModel,
+    activateFiftyFifty: Boolean,
     modifier: Modifier = Modifier,
 ) {
-
     var clickedAnswer by remember { mutableStateOf(false) }
     var showPopUp by remember { mutableStateOf(false) }
     var tempAnswer by remember { mutableStateOf<Answer?>(null) }
-    var shuffleList = question.answers.shuffled()
+    val shuffleList = remember(question) { question.answers.shuffled() }
+
+    val removedAnswers = remember(question, activateFiftyFifty) {
+        if (activateFiftyFifty) {
+            question.answers.filter { !it.isRight }.shuffled().take(2)
+        } else emptyList()
+    }
 
     LazyColumn(modifier = modifier.padding(top = 8.dp)) {
         items(shuffleList) { answer ->
-            val state = if (clickedAnswer) {
-                // schon geklickt → nur das gewählte in DEFAULT, alle anderen in REMOVED
-                if (answer == tempAnswer) AnswerState.DEFAULT
-                else AnswerState.CLICKED
-            } else {
-                // noch nichts geklickt → alle in DEFAULT
-                AnswerState.DEFAULT
+            val isRemoved = removedAnswers.contains(answer)
+
+            val state = when {
+                isRemoved -> AnswerState.REMOVED
+                clickedAnswer -> if (answer == tempAnswer) AnswerState.DEFAULT else AnswerState.CLICKED
+                else -> AnswerState.DEFAULT
             }
+
             AnswerButton(
                 answer = answer,
                 onClickOnAnswer = {
@@ -46,8 +51,7 @@ fun AnswerList(
                         clickedAnswer = true
                         showPopUp = true
                         tempAnswer = answer
-                    }
-                    else {
+                    } else {
                         showPopUp = true
                         tempAnswer = answer
                     }
@@ -57,23 +61,20 @@ fun AnswerList(
             )
         }
     }
+
     if (showPopUp) {
-        Log.d("Answer Counter", "Counter = ${quizViewModel.rightAnswers}")
         PopUp(
             onNavigateToEndScreen = {
                 onNavigateToEndScreen(tempAnswer!!)
                 quizViewModel.rightAnswers += 1
                 showPopUp = false
-
             },
             onConfirm = {
                 quizViewModel.rightAnswers += 1
                 quizViewModel.loadNextQuestion()
-
                 quizViewModel.deleteQuestion(question = question)
                 showPopUp = false
                 clickedAnswer = false
-                Log.d("PopUponConfirm", "Counter +1")
             },
             clickedAnswer = clickedAnswer,
             rightAnswers = quizViewModel.rightAnswers,
