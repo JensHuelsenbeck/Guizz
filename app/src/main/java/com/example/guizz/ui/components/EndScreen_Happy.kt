@@ -68,7 +68,7 @@ fun EndScreenHappy(
         Button(
             onClick = {
                 onNavigateToHome()
-                quizViewModel.endLauchGame()
+
             },
             modifier = modifier.padding(top = 90.dp)
         ) {

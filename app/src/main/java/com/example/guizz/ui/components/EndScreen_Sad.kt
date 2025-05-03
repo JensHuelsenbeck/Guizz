@@ -134,7 +134,6 @@ fun EndScreenSad(
                 TextButton(onClick = {
                     onNavigateToHome()
                     isOffended = false
-                    quizViewModel.endLauchGame()
                 }) {
                     Text(
                         "Nach Hause gehen",

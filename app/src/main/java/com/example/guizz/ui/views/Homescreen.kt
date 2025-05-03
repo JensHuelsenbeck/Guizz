@@ -24,13 +24,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.guizz.R
+import com.example.guizz.ui.viewmodel.QuizViewModel
 
 @Composable
 fun HomeScreen(
     onNavigationToQuizScreen: () -> Unit,
+    quizViewModel: QuizViewModel,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier) {
@@ -62,7 +63,11 @@ fun HomeScreen(
                     .size(100.dp)
             )
             Button(
-                onClick = { onNavigationToQuizScreen() },
+                onClick = {
+                    onNavigationToQuizScreen()
+                    quizViewModel.endLauchGame()
+                    quizViewModel.fetchQuestion()
+                },
                 modifier = modifier.padding(top = 90.dp)
             ) {
                 Text(
@@ -87,8 +92,3 @@ fun HomeScreen(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun HomescreenPrev() {
-    HomeScreen({})
-}

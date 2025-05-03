@@ -36,7 +36,9 @@ fun AppStart(
                 modifier = Modifier.padding(innerPadding)
             ) {
                 composable<HomeScreenRoute> {
-                    HomeScreen(onNavigationToQuizScreen = { navController.navigate(QuizScreenRoute) })
+                    HomeScreen(onNavigationToQuizScreen = { navController.navigate(QuizScreenRoute) },
+                        quizViewModel = quizViewModel
+                        )
                 }
                 composable<QuizScreenRoute> {
                     QuizScreen(
