@@ -48,15 +48,20 @@ fun EndScreenHappy(
                 .clip(shape = CircleShape)
                 .size(325.dp)
         )
+        Spacer(Modifier.height(25.dp))
         Text(
             text = "HeRzLiChEn GlückWUNSCH !1!!111! !!",
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
-
+        Spacer(Modifier.height(25.dp))
         Text(
-            text = "Dein Name ist Lauchus Maximus, erster seines Namens!" +
-                    "\nDu hast 10 Fragen richtig beantwortet. Du geiler Lauch.",
+            text = "Dein Name ist Lauchus Maximus, erster seines Namens!",
+            fontSize = 16.sp
+        )
+        Spacer(Modifier.height(25.dp))
+        Text(
+            text = "Du hast 10 Fragen richtig beantwortet. Du geiler Lauch.",
             fontSize = 16.sp
         )
 
