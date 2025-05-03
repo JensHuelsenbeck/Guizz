@@ -1,11 +1,12 @@
 package com.example.guizz.ui.views
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -40,43 +41,49 @@ fun QuizScreen(
     LaunchedEffect(question) {
         activateFiftyFifty = false
     }
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()
-    ) {
-        Spacer(Modifier.height(50.dp))
-        Card(
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
-            )
+    Box(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize()
         ) {
-            Text(
-                text = question.text,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(20.dp)
-                    .width(350.dp),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold
-            )
+            item {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                    )
+                ) {
+                    Text(
+                        text = question.text,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .padding(20.dp)
+                            .width(350.dp),
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+                Spacer(Modifier.height(50.dp))
+            }
+
+            item {
+                AnswerList(
+                    question = question,
+                    onNavigateToEndScreen = onNavigateToEndScreen,
+                    quizViewModel = quizViewModel,
+                    activateFiftyFifty = activateFiftyFifty
+                )
+            }
+
         }
-
-        Spacer(Modifier.height(50.dp))
-
-        AnswerList(
-            question = question,
-            onNavigateToEndScreen = onNavigateToEndScreen,
-            quizViewModel = quizViewModel,
-            activateFiftyFifty = activateFiftyFifty
-        )
-        Spacer(Modifier.height(50.dp))
         if (!quizViewModel.wasJokerUsed) {
             Button(
                 onClick = {
                     activateFiftyFifty = true
                     quizViewModel.wasJokerUsed = true
                 },
-                modifier = Modifier.padding(top = 90.dp)
+                modifier = Modifier
+                    .padding(bottom = 24.dp)
+                    .align(Alignment.BottomCenter)
             ) {
                 Text(
                     text = "50:50",

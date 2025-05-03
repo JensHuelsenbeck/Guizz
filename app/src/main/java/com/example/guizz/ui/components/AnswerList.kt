@@ -1,8 +1,7 @@
 package com.example.guizz.ui.components
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,8 +33,12 @@ fun AnswerList(
         } else emptyList()
     }
 
-    LazyColumn(modifier = modifier.padding(top = 8.dp)) {
-        items(shuffleList) { answer ->
+    Column(
+        modifier = modifier
+            .padding(top = 8.dp)
+            .padding(bottom = 24.dp)
+    ) {
+        shuffleList.forEach { answer ->
             val isRemoved = removedAnswers.contains(answer)
 
             val state = when {
