@@ -28,6 +28,4 @@ class EndScreenViewModel: ViewModel() {
             Log.d("EndScreenSad", "EndScreen wurde geladen")
         }
     }
-
-
 }

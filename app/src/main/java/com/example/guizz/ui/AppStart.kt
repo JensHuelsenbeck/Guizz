@@ -26,19 +26,19 @@ fun AppStart(
 ) {
     val navController = rememberNavController()
 
-
     Scaffold { innerPadding ->
         Column {
-            Spacer(Modifier.height(80.dp))
+            Spacer(modifier.height(80.dp))
             NavHost(
                 navController = navController,
                 startDestination = HomeScreenRoute,
                 modifier = Modifier.padding(innerPadding)
             ) {
                 composable<HomeScreenRoute> {
-                    HomeScreen(onNavigationToQuizScreen = { navController.navigate(QuizScreenRoute) },
+                    HomeScreen(
+                        onNavigationToQuizScreen = { navController.navigate(QuizScreenRoute) },
                         quizViewModel = quizViewModel
-                        )
+                    )
                 }
                 composable<QuizScreenRoute> {
                     QuizScreen(
@@ -59,7 +59,6 @@ fun AppStart(
                         }
                     )
                 }
-
                 composable<EndScreenRoute> {
                     EndScreen(
                         onNavigateToHome = { navController.navigate(HomeScreenRoute) },
@@ -84,7 +83,6 @@ fun AppStart(
                                 }
                                 */
         }
-
     }
 }
 

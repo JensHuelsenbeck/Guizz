@@ -37,7 +37,6 @@ fun QuizScreen(
     val question by quizViewModel.tempQuestion.collectAsState()
     var activateFiftyFifty by remember { mutableStateOf(false) }
 
-
     LaunchedEffect(question) {
         activateFiftyFifty = false
     }

@@ -11,13 +11,9 @@ fun EndScreen(
     quizViewModel: QuizViewModel,
     endScreenViewModel: EndScreenViewModel = viewModel()
 ) {
-
-
-endScreenViewModel.ChangeScreen(
-    viewModel = quizViewModel,
-    onNavigateToHome = onNavigateToHome
-)
-
-
+    endScreenViewModel.ChangeScreen(
+        viewModel = quizViewModel,
+        onNavigateToHome = onNavigateToHome
+    )
 }
 
